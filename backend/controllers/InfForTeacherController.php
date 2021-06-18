@@ -15,22 +15,22 @@ use yii\filters\VerbFilter;
 /**
  * InfForTeacherController implements the CRUD actions for InfForTeacher model.
  */
-class InfForTeacherController extends Controller
+class InfForTeacherController extends SiteController
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+    // public function behaviors()
+    // {
+    //     return [
+    //         'verbs' => [
+    //             'class' => VerbFilter::className(),
+    //             'actions' => [
+    //                 'delete' => ['POST'],
+    //             ],
+    //         ],
+    //     ];
+    // }
 
     /**
      * Lists all InfForTeacher models.
