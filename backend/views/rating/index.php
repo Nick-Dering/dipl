@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use backend\models\UserName;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\RatingSearch */
@@ -38,9 +39,22 @@ $arr[2] = 'Неудов.';
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            ['attribute' => 'teacher_id','label' => 'Преподаватель', 'value'=>'teacher.fio',
-                'filter' => \backend\models\UserName::find()->where(['status' => 1])->select(["CONCAT(lastname, ' ', firstname)", 'id'])->indexBy('id')->column(),
-
+            ['attribute' => 'teacher_id', 'label' => 'Преподаватель', 'value' => 'teacher.fio',
+            //                'filter' =>  UserName::find()->where(['status' => 1])->select(["CONCAT(lastname, ' ', firstname)", 'id'])->indexBy('id')->column(),
+                'filter' => \kartik\select2\Select2::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'teacher_id',
+                    'data' => \yii\helpers\ArrayHelper::map(UserName::find()->where(['=', 'status', 1])->all(), 'id', 'fio'),
+                    'value' => 'teacher.fio',
+                    'options' => [
+                        'class' => 'form-control',
+                        'placeholder' => 'Выберите значение'
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'selectOnClose' => true,
+                    ]
+                ]),
             ],
             ['attribute' => 'subject_id','label' => 'Предмет', 'value'=>'subject.name',
                 'filter' => \backend\models\Subject::find()->select(["name", 'id'])->indexBy('id')->column(),
@@ -49,8 +63,22 @@ $arr[2] = 'Неудов.';
             ['attribute' => 'type_id','label' => 'Тип дисциплины', 'value'=>'type.name',
                 'filter' => \backend\models\Type::find()->select(["name", 'id'])->indexBy('id')->column(),
             ],
-            ['attribute' => 'student_id','label' => 'Студент', 'value'=>'student.fio',
-                'filter' => \backend\models\UserName::find()->where(['!=','status', 1])->select(["CONCAT(lastname, ' ', firstname)", 'id'])->indexBy('id')->column(),
+            ['attribute' => 'student_id', 'label' => 'Студент', 'value' => 'student.fio',
+            //                'filter' => \backend\models\UserName::find()->where(['!=', 'status', 1])->select(["CONCAT(lastname, ' ', firstname)", 'id'])->indexBy('id')->column(),
+                'filter' => \kartik\select2\Select2::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'student_id',
+                    'data' => \yii\helpers\ArrayHelper::map(UserName::find()->where(['!=', 'status', 1])->all(), 'id', 'fio'),
+                    'value' => 'student.fio',
+                    'options' => [
+                        'class' => 'form-control',
+                        'placeholder' => 'Выберите значение'
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'selectOnClose' => true,
+                    ]
+                ]),
             ],
             'semester',
             ['attribute' => 'rating','label' => 'Оценка', 'value' => function ($data) {
